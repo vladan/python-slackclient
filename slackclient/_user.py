@@ -1,16 +1,24 @@
 class User(object):
-    def __init__(self, server, name, user_id, real_name, tz):
-        self.tz = tz
-        self.name = name
-        self.real_name = real_name
+    def __init__(self, server, user):
+        self.id = user['id']
+        self.team_id = user['team_id']
+        self.name = user['name']
+        self.deleted = user['deleted']
+        self.status = user['status']
+        self.color = user['color']
+        self.real_name = user['real_name']
+        self.tz = user['tz']
+        self.tz_label = user['tz_label']
+        self.tz_offset = user['tz_offset']
+        self.is_admin = user['is_admin']
+        self.is_owner = user['is_owner']
+        self.has_2fa = user['has_2fa']
+        self.profile = user['profile']
+
         self.server = server
-        self.id = user_id
 
     def __eq__(self, compare_str):
-        if compare_str in (self.id, self.name):
-            return True
-        else:
-            return False
+        return compare_str in (self.id, self.name)
 
     def __hash__(self):
         return hash(self.id)

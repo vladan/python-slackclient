@@ -2,10 +2,10 @@ from slackclient._slackrequest import SlackRequest
 from slackclient._channel import Channel
 from slackclient._user import User
 from slackclient._util import SearchList, SearchDict
-from ssl import SSLError
 
 from websocket import create_connection
 import json
+import ssl
 
 
 class Server(object):
@@ -89,7 +89,8 @@ class Server(object):
 
     def connect_slack_websocket(self, ws_url):
         try:
-            self.websocket = create_connection(ws_url)
+            sslopt = {"cert_reqs": ssl.CERT_NONE}
+            self.websocket = create_connection(ws_url, sslopt=sslopt)
             self.websocket.sock.setblocking(0)
         except:
             raise SlackConnectionError
@@ -139,7 +140,7 @@ class Server(object):
         while True:
             try:
                 data += "{0}\n".format(self.websocket.recv())
-            except SSLError as e:
+            except ssl.SSLError as e:
                 if e.errno == 2:
                     # errno 2 occurs when trying to read or write data, but more
                     # data needs to be received on the underlying TCP transport

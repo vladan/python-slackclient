@@ -1,21 +1,23 @@
 class User(object):
     def __init__(self, server, user):
-        self.id = user['id']
-        self.team_id = user['team_id']
-        self.name = user['name']
-        self.deleted = user['deleted']
-        self.status = user['status']
-        self.color = user['color']
-        self.real_name = user['real_name']
-        self.tz = user['tz']
-        self.tz_label = user['tz_label']
-        self.tz_offset = user['tz_offset']
-        self.is_admin = user['is_admin']
-        self.is_owner = user['is_owner']
-        self.has_2fa = user['has_2fa']
-        self.profile = user['profile']
-
         self.server = server
+        self.id = user['id']
+        try:
+            self.team_id = user['team_id']
+            self.name = user['name']
+            self.deleted = user['deleted']
+            self.status = user.get('status')
+            self.color = user.get('color')
+            self.real_name = user.get('real_name')
+            self.tz = user.get('tz')
+            self.tz_label = user.get('tz_label')
+            self.tz_offset = user.get('tz_offset')
+            self.is_admin = user.get('is_admin')
+            self.is_owner = user.get('is_owner')
+            self.has_2fa = user.get('has_2fa')
+            self.profile = user.get('profile')
+        except Exception as ex:
+            print(ex)
 
     def __eq__(self, compare_str):
         return compare_str in (self.id, self.name)
